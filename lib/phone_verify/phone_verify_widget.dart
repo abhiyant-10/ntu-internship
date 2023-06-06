@@ -27,6 +27,8 @@ class _PhoneVerifyWidgetState extends State<PhoneVerifyWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => PhoneVerifyModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -213,7 +215,7 @@ class _PhoneVerifyWidgetState extends State<PhoneVerifyWidget> {
                             return;
                           }
 
-                          context.goNamedAuth('homePage', mounted);
+                          context.goNamedAuth('homePage', context.mounted);
                         },
                         text: 'Confirm & Continue',
                         options: FFButtonOptions(

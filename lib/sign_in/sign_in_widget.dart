@@ -31,6 +31,7 @@ class _SignInWidgetState extends State<SignInWidget> {
 
     _model.emailAddressController ??= TextEditingController();
     _model.passwordController ??= TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -49,6 +50,7 @@ class _SignInWidgetState extends State<SignInWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
+          top: true,
           child: Align(
             alignment: AlignmentDirectional(0.0, -0.15),
             child: SingleChildScrollView(
@@ -92,24 +94,6 @@ class _SignInWidgetState extends State<SignInWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 30.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  if (Theme.of(context).brightness ==
-                                      Brightness.dark)
-                                    Image.asset(
-                                      'assets/images/noCode_UI_onDark@3x.png',
-                                      width: 150.0,
-                                      height: 40.0,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                ],
-                              ),
-                            ),
                             Text(
                               'Welcome Back!',
                               style: FlutterFlowTheme.of(context)
@@ -129,7 +113,17 @@ class _SignInWidgetState extends State<SignInWidget> {
                                   0.0, 4.0, 0.0, 0.0),
                               child: Text(
                                 '.',
-                                style: FlutterFlowTheme.of(context).bodySmall,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: FlutterFlowTheme.of(context)
+                                          .bodySmallFamily,
+                                      color: Color(0xFFFEFFFF),
+                                      useGoogleFonts: GoogleFonts.asMap()
+                                          .containsKey(
+                                              FlutterFlowTheme.of(context)
+                                                  .bodySmallFamily),
+                                    ),
                               ),
                             ),
                             Padding(
@@ -358,7 +352,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                     child: Container(
                                       width: 150.0,
@@ -457,7 +452,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                   ),
                                 ),
@@ -484,7 +480,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                   ),
                                 ),

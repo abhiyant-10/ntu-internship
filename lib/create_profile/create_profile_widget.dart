@@ -1,5 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
-import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -8,7 +6,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +31,7 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
 
     _model.yourNameController ??= TextEditingController();
     _model.cityController ??= TextEditingController();
-    _model.myBioController ??= TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -67,6 +64,7 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
             )
           : null,
       body: SafeArea(
+        top: true,
         child: Align(
           alignment: AlignmentDirectional(0.0, 0.0),
           child: Column(
@@ -395,75 +393,14 @@ class _CreateProfileWidgetState extends State<CreateProfileWidget> {
                         isSearchable: false,
                       ),
                     ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 12.0),
-                      child: TextFormField(
-                        controller: _model.myBioController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelStyle: FlutterFlowTheme.of(context).bodySmall,
-                          hintText: 'Your bio',
-                          hintStyle: FlutterFlowTheme.of(context).bodySmall,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          filled: true,
-                          fillColor:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          contentPadding: EdgeInsetsDirectional.fromSTEB(
-                              20.0, 24.0, 0.0, 24.0),
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                        textAlign: TextAlign.start,
-                        maxLines: 3,
-                        validator: _model.myBioControllerValidator
-                            .asValidator(context),
-                      ),
-                    ),
                     Align(
                       alignment: AlignmentDirectional(0.0, 0.05),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                         child: FFButtonWidget(
-                          onPressed: () async {
-                            final usersUpdateData = createUsersRecordData(
-                              displayName: _model.yourNameController.text,
-                              photoUrl: _model.uploadedFileUrl,
-                              state: _model.stateValue,
-                              bio: _model.myBioController.text,
-                              city: _model.cityController.text,
-                            );
-                            await currentUserReference!.update(usersUpdateData);
-
-                            context.pushNamed('homePage');
+                          onPressed: () {
+                            print('Button pressed ...');
                           },
                           text: 'Save Changes',
                           options: FFButtonOptions(

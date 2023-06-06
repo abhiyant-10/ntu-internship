@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
-import '../../backend/backend.dart';
+import '/backend/backend.dart';
 
 import '../../auth/base_auth_user_provider.dart';
 
@@ -20,6 +20,11 @@ export 'serialization_util.dart';
 const kTransitionInfoKey = '__transition_info__';
 
 class AppStateNotifier extends ChangeNotifier {
+  AppStateNotifier._();
+
+  static AppStateNotifier? _instance;
+  static AppStateNotifier get instance => _instance ??= AppStateNotifier._();
+
   BaseAuthUser? initialUser;
   BaseAuthUser? user;
   bool showSplashImage = true;
@@ -68,14 +73,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? NavBarPage() : SignInWidget(),
+      errorBuilder: (context, state) =>
+          appStateNotifier.loggedIn ? NavBarPage() : SplashWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : SignInWidget(),
+              appStateNotifier.loggedIn ? NavBarPage() : SplashWidget(),
           routes: [
             FFRoute(
               name: 'signIn',
@@ -108,30 +113,90 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => PhoneVerifyWidget(),
             ),
             FFRoute(
+              name: 'settings',
+              path: 'settings',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'settings')
+                  : SettingsWidget(),
+            ),
+            FFRoute(
               name: 'homePage',
               path: 'homePage',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'homePage')
                   : HomePageWidget(),
             ),
             FFRoute(
-              name: 'courses',
-              path: 'courses',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'courses')
-                  : CoursesWidget(),
+              name: 'ph_graph',
+              path: 'phGraph',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: PhGraphWidget(),
+              ),
             ),
             FFRoute(
-              name: 'profilePage',
-              path: 'profilePage',
+              name: 'temp_graph',
+              path: 'temp_graph',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: TempGraphWidget(),
+              ),
+            ),
+            FFRoute(
+              name: 'turbidity_graph',
+              path: 'turbidity',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: TurbidityGraphWidget(),
+              ),
+            ),
+            FFRoute(
+              name: 'aboutUs',
+              path: 'aboutUs',
+              requireAuth: true,
               builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'profilePage')
-                  : ProfilePageWidget(),
+                  ? NavBarPage(initialPage: 'aboutUs')
+                  : AboutUsWidget(),
+            ),
+            FFRoute(
+              name: 'splash',
+              path: 'splash',
+              builder: (context, params) => SplashWidget(),
+            ),
+            FFRoute(
+              name: 'conductivity_graph',
+              path: 'conductivity_graph',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: ConductivityGraphWidget(),
+              ),
+            ),
+            FFRoute(
+              name: 'oxygen_graph',
+              path: 'oxygen_graph',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: OxygenGraphWidget(),
+              ),
+            ),
+            FFRoute(
+              name: 'salinity_graph',
+              path: 'salinity_graph',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: SalinityGraphWidget(),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
-      urlPathStrategy: UrlPathStrategy.path,
     );
 
 extension NavParamExtensions on Map<String, String?> {
@@ -146,8 +211,8 @@ extension NavigationExtensions on BuildContext {
   void goNamedAuth(
     String name,
     bool mounted, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, String> queryParams = const <String, String>{},
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, String> queryParameters = const <String, String>{},
     Object? extra,
     bool ignoreRedirect = false,
   }) =>
@@ -155,16 +220,16 @@ extension NavigationExtensions on BuildContext {
           ? null
           : goNamed(
               name,
-              params: params,
-              queryParams: queryParams,
+              pathParameters: pathParameters,
+              queryParameters: queryParameters,
               extra: extra,
             );
 
   void pushNamedAuth(
     String name,
     bool mounted, {
-    Map<String, String> params = const <String, String>{},
-    Map<String, String> queryParams = const <String, String>{},
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, String> queryParameters = const <String, String>{},
     Object? extra,
     bool ignoreRedirect = false,
   }) =>
@@ -172,25 +237,24 @@ extension NavigationExtensions on BuildContext {
           ? null
           : pushNamed(
               name,
-              params: params,
-              queryParams: queryParams,
+              pathParameters: pathParameters,
+              queryParameters: queryParameters,
               extra: extra,
             );
 
   void safePop() {
     // If there is only one route on the stack, navigate to the initial
     // page instead of popping.
-    if (GoRouter.of(this).routerDelegate.matches.length <= 1) {
-      go('/');
-    } else {
+    if (canPop()) {
       pop();
+    } else {
+      go('/');
     }
   }
 }
 
 extension GoRouterExtensions on GoRouter {
-  AppStateNotifier get appState =>
-      (routerDelegate.refreshListenable as AppStateNotifier);
+  AppStateNotifier get appState => AppStateNotifier.instance;
   void prepareAuthEvent([bool ignoreRedirect = false]) =>
       appState.hasRedirect() && !ignoreRedirect
           ? null
@@ -199,16 +263,15 @@ extension GoRouterExtensions on GoRouter {
       !ignoreRedirect && appState.hasRedirect();
   void clearRedirectLocation() => appState.clearRedirectLocation();
   void setRedirectLocationIfUnset(String location) =>
-      (routerDelegate.refreshListenable as AppStateNotifier)
-          .updateNotifyOnAuthChange(false);
+      appState.updateNotifyOnAuthChange(false);
 }
 
 extension _GoRouterStateExtensions on GoRouterState {
   Map<String, dynamic> get extraMap =>
       extra != null ? extra as Map<String, dynamic> : {};
   Map<String, dynamic> get allParams => <String, dynamic>{}
-    ..addAll(params)
-    ..addAll(queryParams)
+    ..addAll(pathParameters)
+    ..addAll(queryParameters)
     ..addAll(extraMap);
   TransitionInfo get transitionInfo => extraMap.containsKey(kTransitionInfoKey)
       ? extraMap[kTransitionInfoKey] as TransitionInfo
@@ -264,7 +327,8 @@ class FFParameters {
       return param;
     }
     // Return serialized value.
-    return deserializeParam<T>(param, type, isList, collectionNamePath);
+    return deserializeParam<T>(param, type, isList,
+        collectionNamePath: collectionNamePath);
   }
 }
 
@@ -288,7 +352,7 @@ class FFRoute {
   GoRoute toRoute(AppStateNotifier appStateNotifier) => GoRoute(
         name: name,
         path: path,
-        redirect: (state) {
+        redirect: (context, state) {
           if (appStateNotifier.shouldRedirect) {
             final redirectLocation = appStateNotifier.getRedirectLocation();
             appStateNotifier.clearRedirectLocation();
@@ -297,7 +361,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/signIn';
+            return '/splash';
           }
           return null;
         },

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -177,9 +178,11 @@ bool get isAndroid => !kIsWeb && Platform.isAndroid;
 bool get isiOS => !kIsWeb && Platform.isIOS;
 bool get isWeb => kIsWeb;
 
-const kMobileWidthCutoff = 479.0;
+const kBreakpointSmall = 479.0;
+const kBreakpointMedium = 767.0;
+const kBreakpointLarge = 991.0;
 bool isMobileWidth(BuildContext context) =>
-    MediaQuery.of(context).size.width < kMobileWidthCutoff;
+    MediaQuery.of(context).size.width < kBreakpointSmall;
 bool responsiveVisibility({
   required BuildContext context,
   bool phone = true,
@@ -188,11 +191,11 @@ bool responsiveVisibility({
   bool desktop = true,
 }) {
   final width = MediaQuery.of(context).size.width;
-  if (width < kMobileWidthCutoff) {
+  if (width < kBreakpointSmall) {
     return phone;
-  } else if (width < 767) {
+  } else if (width < kBreakpointMedium) {
     return tablet;
-  } else if (width < 991) {
+  } else if (width < kBreakpointLarge) {
     return tabletLandscape;
   } else {
     return desktop;
@@ -204,6 +207,48 @@ const kTextValidatorEmailRegex =
     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$";
 const kTextValidatorWebsiteRegex =
     r'(https?:\/\/)?(www\.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,10}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)|(https?:\/\/)?(www\.)?(?!ww)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,10}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)';
+
+LatLng? cachedUserLocation;
+Future<LatLng> getCurrentUserLocation(
+    {required LatLng defaultLocation, bool cached = false}) async {
+  if (cached && cachedUserLocation != null) {
+    return cachedUserLocation!;
+  }
+  return queryCurrentUserLocation().then((loc) {
+    if (loc != null) {
+      cachedUserLocation = loc;
+    }
+    return loc ?? defaultLocation;
+  }).onError((error, _) {
+    print("Error querying user location: $error");
+    return defaultLocation;
+  });
+}
+
+Future<LatLng?> queryCurrentUserLocation() async {
+  final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  var permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  final position = await Geolocator.getCurrentPosition();
+  return position != null && position.latitude != 0 && position.longitude != 0
+      ? LatLng(position.latitude, position.longitude)
+      : null;
+}
 
 extension FFTextEditingControllerExt on TextEditingController? {
   String get text => this == null ? '' : this!.text;

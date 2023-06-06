@@ -53,12 +53,15 @@ class _PhoneSignInWidgetState extends State<PhoneSignInWidget>
     _model = createModel(context, () => PhoneSignInModel());
 
     _model.phoneNumberController ??= TextEditingController();
+    authManager.handlePhoneAuthStateChanges(context);
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
           !anim.applyInitialState),
       this,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -254,10 +257,10 @@ class _PhoneSignInWidgetState extends State<PhoneSignInWidget>
                         await authManager.beginPhoneAuth(
                           context: context,
                           phoneNumber: phoneNumberVal,
-                          onCodeSent: () async {
+                          onCodeSent: (context) async {
                             context.goNamedAuth(
                               'phoneVerify',
-                              mounted,
+                              context.mounted,
                               ignoreRedirect: true,
                             );
                           },

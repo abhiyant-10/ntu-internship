@@ -30,6 +30,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
     _model.emailAddressController ??= TextEditingController();
     _model.passwordController ??= TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -48,6 +49,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
+          top: true,
           child: Align(
             alignment: AlignmentDirectional(0.0, -0.15),
             child: SingleChildScrollView(
@@ -97,16 +99,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  if (Theme.of(context).brightness ==
-                                      Brightness.dark)
-                                    Image.asset(
-                                      'assets/images/noCode_UI_onDark@3x.png',
-                                      width: 150.0,
-                                      height: 40.0,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                ],
+                                children: [],
                               ),
                             ),
                             Text(
@@ -332,7 +325,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                     child: Container(
                                       width: 150.0,
@@ -439,7 +433,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                   ),
                                 ),
@@ -466,7 +461,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                         return;
                                       }
 
-                                      context.goNamedAuth('homePage', mounted);
+                                      context.goNamedAuth(
+                                          'homePage', context.mounted);
                                     },
                                   ),
                                 ),
