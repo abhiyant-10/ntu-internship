@@ -22,10 +22,9 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
   late AboutUsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
-    'textOnPageLoadAnimation': AnimationInfo(
+    'textOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
         VisibilityEffect(duration: 100.ms),
@@ -41,6 +40,26 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
           delay: 100.ms,
           duration: 600.ms,
           begin: Offset(0.0, 170.0),
+          end: Offset(0.0, 0.0),
+        ),
+      ],
+    ),
+    'textOnPageLoadAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0.0, 0.0),
           end: Offset(0.0, 0.0),
         ),
       ],
@@ -79,14 +98,13 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -189,7 +207,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         .labelMediumFamily),
                               ),
                         ).animateOnPageLoad(
-                            animationsMap['textOnPageLoadAnimation']!),
+                            animationsMap['textOnPageLoadAnimation1']!),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
@@ -208,7 +226,8 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                     FlutterFlowTheme.of(context)
                                         .bodyMediumFamily),
                               ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['textOnPageLoadAnimation2']!),
                       ),
                       Padding(
                         padding:

@@ -193,6 +193,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 initialPage: '',
                 page: SalinityGraphWidget(),
               ),
+            ),
+            FFRoute(
+              name: 'SensorSpecs',
+              path: 'sensorSpecs',
+              requireAuth: true,
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: SensorSpecsWidget(),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

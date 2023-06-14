@@ -16,3 +16,4 @@ export '/conductivity_graph/conductivity_graph_widget.dart'
     show ConductivityGraphWidget;
 export '/oxygen_graph/oxygen_graph_widget.dart' show OxygenGraphWidget;
 export '/salinity_graph/salinity_graph_widget.dart' show SalinityGraphWidget;
+export '/sensor_specs/sensor_specs_widget.dart' show SensorSpecsWidget;
