@@ -44,6 +44,11 @@ class LiveDataRecord extends FirestoreRecord {
   double get o2 => _o2 ?? 0.0;
   bool hasO2() => _o2 != null;
 
+  // "test_id" field.
+  int? _testId;
+  int get testId => _testId ?? 0;
+  bool hasTestId() => _testId != null;
+
   void _initializeFields() {
     _ph = castToType<double>(snapshotData['ph']);
     _temperature = castToType<double>(snapshotData['temperature']);
@@ -51,6 +56,7 @@ class LiveDataRecord extends FirestoreRecord {
     _tds = castToType<double>(snapshotData['tds']);
     _co2 = castToType<double>(snapshotData['co2']);
     _o2 = castToType<double>(snapshotData['o2']);
+    _testId = snapshotData['test_id'] as int?;
   }
 
   static CollectionReference get collection =>
@@ -94,6 +100,7 @@ Map<String, dynamic> createLiveDataRecordData({
   double? tds,
   double? co2,
   double? o2,
+  int? testId,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -103,6 +110,7 @@ Map<String, dynamic> createLiveDataRecordData({
       'tds': tds,
       'co2': co2,
       'o2': o2,
+      'test_id': testId,
     }.withoutNulls,
   );
 

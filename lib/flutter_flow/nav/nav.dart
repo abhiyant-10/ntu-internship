@@ -52,10 +52,13 @@ class AppStateNotifier extends ChangeNotifier {
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
   void update(BaseAuthUser newUser) {
+    final shouldUpdate =
+        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
+    // No need to update unless the user has changed.
+    if (notifyOnAuthChange && shouldUpdate) {
       notifyListeners();
     }
     // Once again mark the notifier as needing to update on auth change
@@ -128,33 +131,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : HomePageWidget(),
             ),
             FFRoute(
-              name: 'ph_graph',
-              path: 'phGraph',
-              requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: PhGraphWidget(),
-              ),
-            ),
-            FFRoute(
-              name: 'temp_graph',
-              path: 'temp_graph',
-              requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: TempGraphWidget(),
-              ),
-            ),
-            FFRoute(
-              name: 'turbidity_graph',
-              path: 'turbidity',
-              requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: TurbidityGraphWidget(),
-              ),
-            ),
-            FFRoute(
               name: 'aboutUs',
               path: 'aboutUs',
               requireAuth: true,
@@ -163,45 +139,58 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : AboutUsWidget(),
             ),
             FFRoute(
+              name: 'temp_graph',
+              path: 'temp_graph',
+              requireAuth: true,
+              builder: (context, params) => TempGraphWidget(),
+            ),
+            FFRoute(
+              name: 'turbidity_graph',
+              path: 'turbidity',
+              requireAuth: true,
+              builder: (context, params) => TurbidityGraphWidget(),
+            ),
+            FFRoute(
               name: 'splash',
               path: 'splash',
               builder: (context, params) => SplashWidget(),
             ),
             FFRoute(
-              name: 'conductivity_graph',
-              path: 'conductivity_graph',
-              requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: ConductivityGraphWidget(),
-              ),
-            ),
-            FFRoute(
               name: 'oxygen_graph',
               path: 'oxygen_graph',
               requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: OxygenGraphWidget(),
-              ),
+              builder: (context, params) => OxygenGraphWidget(),
+            ),
+            FFRoute(
+              name: 'conductivity_graph',
+              path: 'conductivity_graph',
+              requireAuth: true,
+              builder: (context, params) => ConductivityGraphWidget(),
             ),
             FFRoute(
               name: 'salinity_graph',
               path: 'salinity_graph',
               requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: SalinityGraphWidget(),
-              ),
+              builder: (context, params) => SalinityGraphWidget(),
+            ),
+            FFRoute(
+              name: 'update_sensorspec',
+              path: 'updateSensorspec',
+              builder: (context, params) => UpdateSensorspecWidget(),
+            ),
+            FFRoute(
+              name: 'ph_graph',
+              path: 'ph_graph',
+              requireAuth: true,
+              builder: (context, params) => PhGraphWidget(),
             ),
             FFRoute(
               name: 'SensorSpecs',
               path: 'sensorSpecs',
               requireAuth: true,
-              builder: (context, params) => NavBarPage(
-                initialPage: '',
-                page: SensorSpecsWidget(),
-              ),
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'SensorSpecs')
+                  : SensorSpecsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

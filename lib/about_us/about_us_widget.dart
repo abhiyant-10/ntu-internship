@@ -103,6 +103,8 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
@@ -127,7 +129,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                     size: 30.0,
                   ),
                   onPressed: () async {
-                    context.safePop();
+                    context.pushNamed('homePage');
                   },
                 ),
                 actions: [],
@@ -155,8 +157,8 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                           style: FlutterFlowTheme.of(context)
                               .displaySmall
                               .override(
-                                fontFamily: 'Plus Jakarta Sans',
-                                color: Color(0xFF101213),
+                                fontFamily: 'Oswald',
+                                color: Color(0xFF064273),
                                 fontSize: 36.0,
                                 fontWeight: FontWeight.w600,
                                 useGoogleFonts: GoogleFonts.asMap().containsKey(
@@ -179,7 +181,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                           style: FlutterFlowTheme.of(context)
                               .headlineMedium
                               .override(
-                                fontFamily: 'Roboto Mono',
+                                fontFamily: 'Oswald',
                                 color: Color(0xFF101213),
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.w500,
@@ -198,7 +200,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                           style: FlutterFlowTheme.of(context)
                               .labelMedium
                               .override(
-                                fontFamily: 'Roboto Mono',
+                                fontFamily: 'Oswald',
                                 color: Color(0xFF57636C),
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w500,
@@ -280,7 +282,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
-                                              fontFamily: 'Roboto Mono',
+                                              fontFamily: 'Oswald',
                                               fontSize: 22.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
@@ -337,7 +339,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
-                                              fontFamily: 'Roboto Mono',
+                                              fontFamily: 'Oswald',
                                               fontSize: 22.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
@@ -394,7 +396,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
-                                              fontFamily: 'Roboto Mono',
+                                              fontFamily: 'Oswald',
                                               fontSize: 22.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
@@ -451,7 +453,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
-                                              fontFamily: 'Roboto Mono',
+                                              fontFamily: 'Oswald',
                                               fontSize: 22.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
@@ -508,7 +510,7 @@ class _AboutUsWidgetState extends State<AboutUsWidget>
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
-                                              fontFamily: 'Roboto Mono',
+                                              fontFamily: 'Oswald',
                                               fontSize: 22.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
