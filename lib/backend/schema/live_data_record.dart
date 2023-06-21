@@ -1,59 +1,96 @@
 import 'dart:async';
 
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'live_data_record.g.dart';
+class LiveDataRecord extends FirestoreRecord {
+  LiveDataRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class LiveDataRecord
-    implements Built<LiveDataRecord, LiveDataRecordBuilder> {
-  static Serializer<LiveDataRecord> get serializer =>
-      _$liveDataRecordSerializer;
+  // "ph" field.
+  double? _ph;
+  double get ph => _ph ?? 0.0;
+  bool hasPh() => _ph != null;
 
-  double? get ph;
+  // "temperature" field.
+  double? _temperature;
+  double get temperature => _temperature ?? 0.0;
+  bool hasTemperature() => _temperature != null;
 
-  double? get temperature;
+  // "turbidity" field.
+  double? _turbidity;
+  double get turbidity => _turbidity ?? 0.0;
+  bool hasTurbidity() => _turbidity != null;
 
-  double? get turbidity;
+  // "tds" field.
+  double? _tds;
+  double get tds => _tds ?? 0.0;
+  bool hasTds() => _tds != null;
 
-  double? get tds;
+  // "co2" field.
+  double? _co2;
+  double get co2 => _co2 ?? 0.0;
+  bool hasCo2() => _co2 != null;
 
-  double? get co2;
+  // "o2" field.
+  double? _o2;
+  double get o2 => _o2 ?? 0.0;
+  bool hasO2() => _o2 != null;
 
-  double? get o2;
+  // "test_id" field.
+  int? _testId;
+  int get testId => _testId ?? 0;
+  bool hasTestId() => _testId != null;
 
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ffRef;
-  DocumentReference get reference => ffRef!;
-
-  static void _initializeBuilder(LiveDataRecordBuilder builder) => builder
-    ..ph = 0.0
-    ..temperature = 0.0
-    ..turbidity = 0.0
-    ..tds = 0.0
-    ..co2 = 0.0
-    ..o2 = 0.0;
+  void _initializeFields() {
+    _ph = castToType<double>(snapshotData['ph']);
+    _temperature = castToType<double>(snapshotData['temperature']);
+    _turbidity = castToType<double>(snapshotData['turbidity']);
+    _tds = castToType<double>(snapshotData['tds']);
+    _co2 = castToType<double>(snapshotData['co2']);
+    _o2 = castToType<double>(snapshotData['o2']);
+    _testId = snapshotData['test_id'] as int?;
+  }
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('live_data');
 
-  static Stream<LiveDataRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Stream<LiveDataRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => LiveDataRecord.fromSnapshot(s));
 
-  static Future<LiveDataRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Future<LiveDataRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => LiveDataRecord.fromSnapshot(s));
 
-  LiveDataRecord._();
-  factory LiveDataRecord([void Function(LiveDataRecordBuilder) updates]) =
-      _$LiveDataRecord;
+  static LiveDataRecord fromSnapshot(DocumentSnapshot snapshot) =>
+      LiveDataRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static LiveDataRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      LiveDataRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'LiveDataRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is LiveDataRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createLiveDataRecordData({
@@ -63,18 +100,18 @@ Map<String, dynamic> createLiveDataRecordData({
   double? tds,
   double? co2,
   double? o2,
+  int? testId,
 }) {
-  final firestoreData = serializers.toFirestore(
-    LiveDataRecord.serializer,
-    LiveDataRecord(
-      (l) => l
-        ..ph = ph
-        ..temperature = temperature
-        ..turbidity = turbidity
-        ..tds = tds
-        ..co2 = co2
-        ..o2 = o2,
-    ),
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'ph': ph,
+      'temperature': temperature,
+      'turbidity': turbidity,
+      'tds': tds,
+      'co2': co2,
+      'o2': o2,
+      'test_id': testId,
+    }.withoutNulls,
   );
 
   return firestoreData;

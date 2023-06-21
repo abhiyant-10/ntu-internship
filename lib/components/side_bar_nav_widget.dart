@@ -41,6 +41,8 @@ class _SideBarNavWidgetState extends State<SideBarNavWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => SideBarNavModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -52,6 +54,8 @@ class _SideBarNavWidgetState extends State<SideBarNavWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: 230.0,
       height: double.infinity,
@@ -77,29 +81,6 @@ class _SideBarNavWidgetState extends State<SideBarNavWidget> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 24.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (Theme.of(context).brightness == Brightness.light)
-                    Image.asset(
-                      'assets/images/noCode_UI_onLight@3x.png',
-                      width: 130.0,
-                      height: 40.0,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  if (Theme.of(context).brightness == Brightness.dark)
-                    Image.asset(
-                      'assets/images/noCode_UI_onDark@3x.png',
-                      width: 130.0,
-                      height: 40.0,
-                      fit: BoxFit.fitWidth,
-                    ),
-                ],
-              ),
-            ),
             Text(
               'Menu',
               style: FlutterFlowTheme.of(context).bodySmall,
@@ -169,7 +150,7 @@ class _SideBarNavWidgetState extends State<SideBarNavWidget> {
                 highlightColor: Colors.transparent,
                 onTap: () async {
                   context.pushNamed(
-                    'profilePage',
+                    'settings',
                     extra: <String, dynamic>{
                       kTransitionInfoKey: TransitionInfo(
                         hasTransition: true,

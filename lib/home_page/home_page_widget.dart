@@ -3,6 +3,7 @@ import '/components/side_bar_nav_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:styled_divider/styled_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -26,7 +27,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
   late HomePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -48,20 +48,23 @@ class _HomePageWidgetState extends State<HomePageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -116,122 +119,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 24.0, 0.0, 16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'Welcome',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .bodyMediumFamily,
-                                        color: Color(0xFFFEFFFF),
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.w600,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                      ),
-                                ),
-                                Text(
-                                  '%displayname',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .bodyMediumFamily,
-                                        color: Color(0xFFFEFFFF),
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.w600,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                      ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '.',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .bodyMediumFamily,
-                                        color: Color(0xFF064273),
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily),
-                                      ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'Live Monitoring',
-                                  style: FlutterFlowTheme.of(context)
-                                      .headlineLarge
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .headlineLargeFamily,
-                                        color: Colors.white,
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.w800,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .headlineLargeFamily),
-                                      ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(0.55, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 4.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Date , Time',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .override(
-                                            fontFamily:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodySmallFamily,
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodySmallFamily),
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 0.0, 12.0, 0.0),
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 4.0, 0.0),
                         child: Wrap(
                           spacing: 8.0,
                           runSpacing: 8.0,
@@ -240,20 +129,251 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           direction: Axis.horizontal,
                           runAlignment: WrapAlignment.center,
                           verticalDirection: VerticalDirection.down,
-                          clipBehavior: Clip.none,
+                          clipBehavior: Clip.antiAlias,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
+                              width: double.infinity,
                               height: 293.7,
                               decoration: BoxDecoration(
                                 color: Color(0xFF064273),
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
-                              child: Image.asset(
-                                'assets/images/Screenshot_2023-04-29_032332.png',
-                                width: 100.0,
-                                height: 100.0,
-                                fit: BoxFit.cover,
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 24.0, 0.0, 16.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Live  Monitoring',
+                                          style: FlutterFlowTheme.of(context)
+                                              .displayMedium
+                                              .override(
+                                                fontFamily: 'Roboto Slab',
+                                                color: Color(0xFFFEFFFF),
+                                                fontSize: 40.0,
+                                                fontWeight: FontWeight.bold,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(FlutterFlowTheme
+                                                            .of(context)
+                                                        .displayMediumFamily),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    StyledDivider(
+                                      height: 32.0,
+                                      thickness: 0.0,
+                                      color: Color(0xFFE0E3E7),
+                                      lineStyle: DividerLineStyle.dashdotted,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Align(
+                                                alignment: AlignmentDirectional(
+                                                    0.0, 0.0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 4.0, 0.0, 5.0),
+                                                  child: Text(
+                                                    dateTimeFormat('MMMMEEEEd',
+                                                        getCurrentTimestamp),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodySmall
+                                                        .override(
+                                                          fontFamily:
+                                                              'Merriweather',
+                                                          color: Colors.white,
+                                                          fontSize: 18.0,
+                                                          useGoogleFonts: GoogleFonts
+                                                                  .asMap()
+                                                              .containsKey(
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmallFamily),
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    StyledDivider(
+                                      height: 32.0,
+                                      thickness: 0.0,
+                                      color: Color(0xFFE0E3E7),
+                                      lineStyle: DividerLineStyle.dashdotted,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            StreamBuilder<List<LiveDataRecord>>(
+                                              stream: queryLiveDataRecord(
+                                                singleRecord: true,
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<LiveDataRecord>
+                                                    textLiveDataRecordList =
+                                                    snapshot.data!;
+                                                // Return an empty Container when the item does not exist.
+                                                if (snapshot.data!.isEmpty) {
+                                                  return Container();
+                                                }
+                                                final textLiveDataRecord =
+                                                    textLiveDataRecordList
+                                                            .isNotEmpty
+                                                        ? textLiveDataRecordList
+                                                            .first
+                                                        : null;
+                                                return GradientText(
+                                                  textLiveDataRecord!.testId
+                                                      .toString(),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .headlineMedium
+                                                      .override(
+                                                        fontFamily: 'Roboto',
+                                                        fontSize: 45.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineMediumFamily),
+                                                      ),
+                                                  colors: [
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary
+                                                  ],
+                                                  gradientDirection:
+                                                      GradientDirection.ltr,
+                                                  gradientType:
+                                                      GradientType.linear,
+                                                );
+                                              },
+                                            ),
+                                            Text(
+                                              'Test Id',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Roboto Mono',
+                                                    color: Color(0xFFFEFFFF),
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    useGoogleFonts: GoogleFonts
+                                                            .asMap()
+                                                        .containsKey(
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMediumFamily),
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            GradientText(
+                                              'A',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .headlineMedium
+                                                      .override(
+                                                        fontFamily: 'Roboto',
+                                                        fontSize: 50.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineMediumFamily),
+                                                      ),
+                                              colors: [
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                                FlutterFlowTheme.of(context)
+                                                    .secondary
+                                              ],
+                                              gradientDirection:
+                                                  GradientDirection.ltr,
+                                              gradientType: GradientType.linear,
+                                            ),
+                                            Text(
+                                              'Water Class',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Roboto Mono',
+                                                    color: Color(0xFFFEFFFF),
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    useGoogleFonts: GoogleFonts
+                                                            .asMap()
+                                                        .containsKey(
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMediumFamily),
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             StreamBuilder<List<LiveDataRecord>>(
@@ -286,15 +406,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            4.0, 4.0, 8.0, 4.0),
+                                            0.0, 4.0, 0.0, 0.0),
                                         child: Container(
                                           width: double.infinity,
-                                          height: 400.0,
+                                          height: 350.0,
                                           constraints: BoxConstraints(
-                                            maxWidth: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.38,
                                             maxHeight: double.infinity,
                                           ),
                                           decoration: BoxDecoration(
@@ -353,235 +469,282 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               .end,
                                                       children: [
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.4,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                  'ph_graph');
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.4,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .secondary,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .white70,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .ph
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .secondary,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .white70,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .ph!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'pH',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelLargeFamily,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).labelLargeFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'pH',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelLargeFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.29,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                'temp_graph',
+                                                                extra: <String,
+                                                                    dynamic>{
+                                                                  kTransitionInfoKey:
+                                                                      TransitionInfo(
+                                                                    hasTransition:
+                                                                        true,
+                                                                    transitionType:
+                                                                        PageTransitionType
+                                                                            .fade,
+                                                                  ),
+                                                                },
+                                                              );
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.29,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .success,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .lineColor,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .temperature
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .success,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .lineColor,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .temperature!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'Temp',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelLargeFamily,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).labelLargeFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'Temperature',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelLargeFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ).animateOnPageLoad(
                                                               animationsMap[
                                                                   'columnOnPageLoadAnimation']!),
                                                         ),
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.7,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                  'salinity_graph');
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.7,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .error,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .lineColor,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .tds
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .error,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .lineColor,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .tds!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'Salinity',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodySmallFamily,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'Salinity',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ],
@@ -608,233 +771,268 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               .end,
                                                       children: [
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.5,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                  'turbidity_graph');
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.5,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .alternate,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .lineColor,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .turbidity
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .alternate,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .lineColor,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .turbidity!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'Turbidity',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelLargeFamily,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).labelLargeFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'Turbidity',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelLargeFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.5,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                  'conductivity_graph');
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.5,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .alternate,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .lineColor,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .co2
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .alternate,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .lineColor,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .co2!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'CO2',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelLargeFamily,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).labelLargeFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'Conductivity',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelLarge
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelLargeFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                         Expanded(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            12.0),
-                                                                child:
-                                                                    CircularPercentIndicator(
-                                                                  percent: 0.1,
-                                                                  radius: 40.0,
-                                                                  lineWidth:
-                                                                      12.0,
-                                                                  animation:
-                                                                      true,
-                                                                  progressColor:
-                                                                      FlutterFlowTheme.of(
+                                                          child: InkWell(
+                                                            splashColor: Colors
+                                                                .transparent,
+                                                            focusColor: Colors
+                                                                .transparent,
+                                                            hoverColor: Colors
+                                                                .transparent,
+                                                            highlightColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            onTap: () async {
+                                                              context.pushNamed(
+                                                                  'oxygen_graph');
+                                                            },
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0),
+                                                                  child:
+                                                                      CircularPercentIndicator(
+                                                                    percent:
+                                                                        0.1,
+                                                                    radius:
+                                                                        40.0,
+                                                                    lineWidth:
+                                                                        12.0,
+                                                                    animation:
+                                                                        true,
+                                                                    progressColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .tertiary,
+                                                                    backgroundColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .lineColor,
+                                                                    center:
+                                                                        Text(
+                                                                      rowLiveDataRecord!
+                                                                          .o2
+                                                                          .toString(),
+                                                                      style: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .tertiary,
-                                                                  backgroundColor:
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .lineColor,
-                                                                  center: Text(
-                                                                    rowLiveDataRecord!
-                                                                        .o2!
-                                                                        .toString(),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              Colors.black,
-                                                                          fontSize:
-                                                                              14.0,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          useGoogleFonts:
-                                                                              GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
-                                                                        ),
+                                                                          .bodyMedium
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Outfit',
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize:
+                                                                                14.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            useGoogleFonts:
+                                                                                GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodyMediumFamily),
+                                                                          ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                'O2',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodySmall
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodySmallFamily,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      useGoogleFonts: GoogleFonts
-                                                                              .asMap()
-                                                                          .containsKey(
-                                                                              FlutterFlowTheme.of(context).bodySmallFamily),
-                                                                    ),
-                                                              ),
-                                                            ],
+                                                                Text(
+                                                                  'O2',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodySmall
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Oswald',
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            16.0,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        useGoogleFonts:
+                                                                            GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).bodySmallFamily),
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ],
@@ -860,79 +1058,81 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     4.0, 4.0, 4.0, 4.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 0.0, 16.0),
-                                      child: Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBtnText,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 0.0,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryBtnText,
-                                              offset: Offset(0.0, 3.0),
-                                            )
-                                          ],
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                        ),
-                                        alignment:
-                                            AlignmentDirectional(0.0, 0.0),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 16.0, 16.0, 16.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              GradientText(
-                                                'Get Report',
-                                                style:
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
+                                        child: Container(
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryBtnText,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 0.0,
+                                                color:
                                                     FlutterFlowTheme.of(context)
-                                                        .headlineSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .headlineSmallFamily,
-                                                          color:
-                                                              Color(0xFF064273),
-                                                          fontSize: 25.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .headlineSmallFamily),
-                                                        ),
-                                                colors: [
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondary
-                                                ],
-                                                gradientDirection:
-                                                    GradientDirection.ltr,
-                                                gradientType:
-                                                    GradientType.linear,
-                                              ),
+                                                        .primaryBtnText,
+                                                offset: Offset(0.0, 3.0),
+                                              )
                                             ],
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                          alignment:
+                                              AlignmentDirectional(0.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 16.0, 16.0, 16.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                GradientText(
+                                                  'Get Report',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .headlineSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .headlineSmallFamily,
+                                                        color:
+                                                            Color(0xFF064273),
+                                                        fontSize: 25.0,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineSmallFamily),
+                                                      ),
+                                                  colors: [
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondary
+                                                  ],
+                                                  gradientDirection:
+                                                      GradientDirection.ltr,
+                                                  gradientType:
+                                                      GradientType.linear,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

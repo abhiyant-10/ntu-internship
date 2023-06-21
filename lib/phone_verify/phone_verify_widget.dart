@@ -21,26 +21,28 @@ class _PhoneVerifyWidgetState extends State<PhoneVerifyWidget> {
   late PhoneVerifyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => PhoneVerifyModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -213,7 +215,7 @@ class _PhoneVerifyWidgetState extends State<PhoneVerifyWidget> {
                             return;
                           }
 
-                          context.goNamedAuth('homePage', mounted);
+                          context.goNamedAuth('homePage', context.mounted);
                         },
                         text: 'Confirm & Continue',
                         options: FFButtonOptions(
